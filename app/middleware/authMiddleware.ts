@@ -20,7 +20,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
     // Get token from header
     const authHeader = req.headers.authorization;
     
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader?.startsWith('Bearer ')) {
       res.status(401).json({ message: 'Authorization token required' });
       return;
     }
@@ -28,7 +28,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
     const token = authHeader.split(' ')[1];
     
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret') as DecodedToken;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET ?? 'your_jwt_secret') as DecodedToken;
     
     // Add userId to request
     req.userId = decoded.userId;
